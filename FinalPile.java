@@ -4,6 +4,7 @@ public class FinalPile extends Pile{
   public FinalPile() {
     setPileType(PileType.Final);
   }
+  
 
   public int willMove(Pile p) {
     if (this == p) {
@@ -16,9 +17,7 @@ public class FinalPile extends Pile{
     Card topCard;
 
     System.out.println("We're in willMove Final");
-    // if (p.cards.size() > 1) return false;
     newCard = p.peekTop();
-    // System.out.println("New:" + newCard.toString());
     if (cards.isEmpty() && newCard.rank == 1) {
       System.out.println("If this.cards is empty & new rank == 1");
       suitFilter = newCard.suit;
@@ -27,12 +26,25 @@ public class FinalPile extends Pile{
       return 1;
     }
 
-    if (suitFilter != newCard.suit) {
-      return -1;
-    }
+    // if (suitFilter != newCard.suit) {
+    //   System.out.println("Its the filter");
+    //   return -1;
+    // }
     topCard = cards.get(cards.size() - 1);
     // System.out.println("Top: " + topCard.toString());
-    if (topCard.rank == newCard.rank - 1) {
+    if (p.type == PileType.Normal) {
+      if (!topCard.face) {
+        return -1;
+      }
+
+      if (topCard.black ^ newCard.black) {
+        if (topCard.rank + 1 == newCard.rank) {
+          // System.out.println("CAN MOVE TRUE");
+          return this.cards.size()-1;
+        }
+      }
+    }
+    if (topCard.rank == newCard.rank - 1 && topCard.suit == newCard.suit) {
       System.out.println("If the toprank == newCard rank");
       // test
       // return this.cards.size() - 1;
