@@ -5,5 +5,4 @@ public class DrawPile extends Pile {
     setPileType(PileType.Draw);
   }
 
-  
 }
