@@ -16,6 +16,7 @@ public class Klondike {
   public Klondike() {
     setCards();
     setup();
+
     timer.start();
   }
 
