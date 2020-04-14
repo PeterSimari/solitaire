@@ -1,7 +1,7 @@
 import java.util.*;
 import javafx.scene.canvas.Canvas;
 
-public abstract class Pile {
+public class Pile {
 
   ArrayList<Card> cards;
   PileType type;
@@ -17,7 +17,7 @@ public abstract class Pile {
 
   public Pile() {
     cards = new ArrayList<Card>();
-    // base = new Card(2, Card.Suit.SPADES);
+    base = new Card(2, Card.Suit.SPADES);
     // type = PileType.Normal;
   }
 
@@ -117,7 +117,10 @@ public abstract class Pile {
     
   }
 
-  public int willMove(Pile p);
+  public int willMove(Pile p) {
+    System.out.println("Fuckin beans");
+    return -1;
+  }
 
   public Card searchCard(int rank, String suitName) {
     for(Card c : cards) {
