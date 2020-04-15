@@ -35,8 +35,15 @@ public class GUI extends Application {
   Klondike game;
   Klondike undo;
 
+  public void setStyles() {
+    left.getStyleClass().add("left");
+    main.getStyleClass().add("main");
+
+  }
+
 
   public void start(Stage primaryStage) {
+    setStyles();
     game = new Klondike();
     // game.timer.start();
 
@@ -53,10 +60,6 @@ public class GUI extends Application {
     main.getChildren().addAll(top, normal);
     // left.getChildren().addAll(score, time, moves);
 
-    time.setOnMouseClicked(event -> {
-      System.out.println("You're in the zone");
-    });
-
     
     Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(.1), event -> {
       time.getChildren().clear();
@@ -71,6 +74,7 @@ public class GUI extends Application {
       Label mover = new Label("Moves: " + move);
       moves.setAlignment(Pos.CENTER);
       moves.getChildren().addAll(mover);
+      winCheck();
       
     }));
     timeline.setCycleCount(Timeline.INDEFINITE);
@@ -82,6 +86,8 @@ public class GUI extends Application {
     left.getChildren().addAll(time, moves);
 
     Scene base = new Scene(window, width, height);
+
+    base.getStylesheets().add(getClass().getResource("./Style.css").toExternalForm());
     
     primaryStage.setTitle("Solitaire");
     primaryStage.setScene(base);
@@ -100,6 +106,7 @@ public class GUI extends Application {
             // try to move it here
             System.out.println("Destination Pile: " + destination.toString());
             if (source.willMove(destination) > 0) {
+              move++;
               // destination.peekTop() has to be changed in order for an entire pile to move.
               // maybe split?
               source.merge(destination.split(destination.peekTop()));
@@ -138,6 +145,7 @@ public class GUI extends Application {
           // System.out.println("Destination Pile: " + destination.toString());
           // if (destination.willMove(game.getPile)) {
           if (game.getPile.willMove(destination) > 0) {
+            move++;
             System.out.println("So it will move... but both are now selected to be false");
             game.getPile.merge(destination.split(destination.peekTop()));
             destination.selected = false;
@@ -156,31 +164,6 @@ public class GUI extends Application {
         }
 
       }
-      // for (Pile destination : game.finalPiles) {
-      //   if (destination.selected) {
-      //     // try to move it here
-      //     System.out.println("F Destination Pile: " + destination.toString());
-      //     System.out.println("F Source Pile: " + game.getPile.toString());
-      //     // System.out.println("Destination Pile: " + destination.toString());
-      //     if (destination.willMove(game.getPile) > 0) {
-      //       System.out.println("So it will move... but both are now selected to be false");
-      //       game.getPile.merge(destination.split(destination.peekTop()));
-      //       destination.selected = false;
-      //       // game.getPile.selected = false;
-      //       refresh();
-      //       break;
-      //     } else {
-      //       destination.selected = false;
-      //       System.out.println("Nothing- get");
-      //     }
-      //   } else {
-      //     // System.out.println("Everythings getting selected");
-      //     game.getPile.selected = true;
-      //     // rawn.selected = true;
-      //     refresh();
-      //   }
-
-      // }
       refresh();
     });
     top.getChildren().addAll(get);
@@ -222,18 +205,9 @@ public class GUI extends Application {
             if (splitter != -1) {
               move++;
               System.out.println("Youre doing it right");
-              // System.out.println("Source: " + source.toString());
-              // System.out.println("Destination: " + destination.toString());
-              // source.split(source.peekTop()).merge(destination);
+
               normalPile.merge(destination.split(destination.getCards().get(splitter)));
-              // destination.merge(source.split(source.peekTop()));
-              // destination.merge(source.split(source.peekTop()));
-              // source.removeCard(source.peekTop());
 
-              // System.out.println("1Source: " + source.toString());
-              // System.out.println("1Destination: " + destination.toString());
-
-              // System.out.println("Merged Pile: " + source.toString());
               destination.selected = false;
               normalPile.selected = false;
               refresh();
@@ -270,6 +244,7 @@ public class GUI extends Application {
 
   public void createMenu() {
     MenuBar menuBar = new MenuBar();
+
     Menu reset = new Menu("New");
     MenuItem newGame = new MenuItem("New Game");
     reset.getItems().addAll(newGame);
@@ -281,6 +256,12 @@ public class GUI extends Application {
 
     menuBar.getMenus().addAll(reset);
     window.setTop(menuBar);
+  }
+
+  public void winCheck() {
+    if (game.win()) {
+      game.timer.pause();
+    }
   }
 
   public void stop() {
