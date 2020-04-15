@@ -21,17 +21,10 @@ public class FinalPile extends Pile{
     if (cards.isEmpty() && newCard.rank == 1) {
       System.out.println("If this.cards is empty & new rank == 1");
       suitFilter = newCard.suit;
-      // test
-      // return this.cards.size() - 1;
       return 1;
     }
 
-    // if (suitFilter != newCard.suit) {
-    //   System.out.println("Its the filter");
-    //   return -1;
-    // }
     topCard = cards.get(cards.size() - 1);
-    // System.out.println("Top: " + topCard.toString());
     if (p.type == PileType.Normal) {
       if (!topCard.face) {
         return -1;
@@ -44,10 +37,11 @@ public class FinalPile extends Pile{
         }
       }
     }
-    if (topCard.rank == newCard.rank - 1 && topCard.suit == newCard.suit) {
+    System.out.println("This is before the check");
+    if (topCard.rank == newCard.rank - 1 && topCard.suit == newCard.suit && this.type != PileType.Normal) {
+      System.out.println("P.type = " + p.type);
+      System.out.println("this.type = " + this.type );
       System.out.println("If the toprank == newCard rank");
-      // test
-      // return this.cards.size() - 1;
       return 1;
     }
     return -1;
