@@ -27,39 +27,51 @@ public class GUI extends Application {
 
   VBox left = new VBox(10);
   HBox score = new HBox(10);
-  HBox time = new HBox(10);
+  HBox time = new HBox(50);
   HBox moves = new HBox(10);
 
   private int move = 0;
 
   Klondike game;
+  Klondike undo;
 
 
   public void start(Stage primaryStage) {
     game = new Klondike();
     // game.timer.start();
 
+    left.setPrefWidth(150);
+
     createMenu();
     drawGame();
     top.setAlignment(Pos.CENTER);
     normal.setAlignment(Pos.CENTER);
-
+    
     window.setCenter(main);
     window.setLeft(left);
 
     main.getChildren().addAll(top, normal);
     // left.getChildren().addAll(score, time, moves);
 
+    time.setOnMouseClicked(event -> {
+      System.out.println("You're in the zone");
+    });
+
     
     Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(.1), event -> {
       time.getChildren().clear();
       final Label timey = new Label(game.timer.toString());
+      time.setAlignment(Pos.CENTER);
+
+
       time.getChildren().addAll(timey);
       // System.out.println("THIS IS WORKING");
 
       moves.getChildren().clear();
       Label mover = new Label("Moves: " + move);
+      moves.setAlignment(Pos.CENTER);
       moves.getChildren().addAll(mover);
+      
     }));
     timeline.setCycleCount(Timeline.INDEFINITE);
     timeline.play();
