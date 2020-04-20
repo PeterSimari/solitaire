@@ -11,6 +11,7 @@ public class Klondike {
   Pile drawPile;
   public final int pileNumber = 7;
 
+
   StopWatch timer = new StopWatch();
   
   public Klondike() {
@@ -108,33 +109,9 @@ public class Klondike {
   }
 
 
+  // PETE REMEMBER
+  // for getPile, if anyone even clicks on the pile dont consider it selected. deselect everything, then select that.
 
-
-
-  // public void clickMove(Card move) {
-  //   int rank = move.getRank();
-  //   Card.Suit suit = move.getSuit();
-    
-
-  //   for(Pile all : piles) {
-  //     if (move.black) {
-  //       Card diamond = all.searchCard(rank + 1, "DIAMONDS");
-  //       if (diamond.face == true) {
-  //         System.out.println(diamond);
-  //         return;
-  //       }
-  //       Card heart = all.searchCard(rank + 1, "HEARTS");
-  //       if (heart.face) {
-  //         System.out.println(heart);
-  //         return;
-  //       }
-  //     }
-  //     // Card mover = all.searchCard(rank + 1, suit.toString());
-      
-      
-      
-  //   }
-  // }
 
   public boolean win() {
     for (Pile p : finalPiles) {
