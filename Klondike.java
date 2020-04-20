@@ -11,6 +11,8 @@ public class Klondike {
   Pile drawPile;
   public final int pileNumber = 7;
 
+  Pile selecter;
+
 
   StopWatch timer = new StopWatch();
   
