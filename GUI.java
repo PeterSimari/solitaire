@@ -297,6 +297,10 @@ public class GUI extends Application {
       newGame();
     });
 
+    Menu theme = new Menu("Themes");
+    MenuItem chooseTheme = new MenuItem("Choose Themes");
+    MenuItem makeTheme = new MenuItem("Custom Cards");
+
     menuBar.getMenus().addAll(reset);
     window.setTop(menuBar);
   }
