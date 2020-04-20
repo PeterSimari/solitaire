@@ -1,9 +1,7 @@
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 public class Card extends Parent {
 
@@ -89,16 +87,14 @@ public class Card extends Parent {
       Image rawn = new Image("/art/back.png");
       gc.drawImage(rawn, x, y);
     }
-  }
+    
+    canvas.setOnMouseClicked(event -> {
+      // if (rawn.peekTop()) {
 
-  public void drawSelectedOnCanvas(Canvas canvas, int x, int y) {
-    GraphicsContext gc = canvas.getGraphicsContext2D();
-    if (this.face == true) {
-      Image modify = this.toImage();
-      ColorAdjust colorAdjust = new ColorAdjust();
-      colorAdjust.setBrightness(-0.3);
-
-    }
+      // }
+      // System.out.println(this);
+    });
+    
   }
 
   public boolean equals(Object check) {
