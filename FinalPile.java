@@ -43,7 +43,7 @@ public class FinalPile extends Pile {
       // }
     }
     System.out.println("This is before the check");
-    System.out.println("This is to check the suits: \nTopcard: " + topCard.suit + "\nnewCard: " + newCard.suit);
+    // System.out.println("This is to check the suits: \nTopcard: " + topCard.suit + "\nnewCard: " + newCard.suit);
     if (topCard.rank == newCard.rank - 1 && topCard.suit == newCard.suit && this.type != PileType.Normal) {
       System.out.println("P.type = " + p.type);
       System.out.println("this.type = " + this.type );
