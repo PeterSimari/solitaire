@@ -35,16 +35,22 @@ public class FinalPile extends Pile {
       // it only really makes sense for this to not work
       // this method here is for the normal pile to check
       // wtf!!!
-      // if (topCard.black ^ newCard.black) {
-      //   if (topCard.rank + 1 == newCard.rank) {
-      //     // System.out.println("CAN MOVE TRUE");
-      //     return this.cards.size()-1;
-      //   }
-      // }
+      if (topCard.black ^ newCard.black) {
+        if (topCard.rank + 1 == newCard.rank) {
+          System.out.println("This.piletype = " + this.type.toString());
+          System.out.println("p.piletype = " + p.type.toString());
+          if (p.type == PileType.Final) {
+            return -1;
+          } else {
+            return this.cards.size() - 1;
+          }
+          // System.out.println("CAN MOVE TRUE");
+        }
+      }
     }
     System.out.println("This is before the check");
     // System.out.println("This is to check the suits: \nTopcard: " + topCard.suit + "\nnewCard: " + newCard.suit);
-    if (topCard.rank == newCard.rank - 1 && topCard.suit == newCard.suit && this.type != PileType.Normal) {
+    if (topCard.rank == newCard.rank - 1 && topCard.suit == newCard.suit && p.type != PileType.Normal && this.type != PileType.Normal) {
       System.out.println("P.type = " + p.type);
       System.out.println("this.type = " + this.type );
       System.out.println("If the toprank == newCard rank");
