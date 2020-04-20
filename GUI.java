@@ -1,15 +1,20 @@
 import javafx.util.Duration;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.*;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
@@ -74,7 +79,6 @@ public class GUI extends Application {
       Label mover = new Label("Moves: " + move);
       moves.setAlignment(Pos.CENTER);
       moves.getChildren().addAll(mover);
-      winCheck();
       
     }));
     timeline.setCycleCount(Timeline.INDEFINITE);
@@ -101,8 +105,12 @@ public class GUI extends Application {
       Canvas mawn = new Canvas(80, 124);
       mawn = source.toNode(0);
       mawn.setOnMouseClicked(event -> {
+        // Pile localSource = source;
+        Boolean someSelect = false;
         for (Pile destination : game.allPiles) {
+          
           if (destination.selected) {
+            someSelect = true;
             // try to move it here
             System.out.println("Destination Pile: " + destination.toString());
             if (source.willMove(destination) > 0) {
@@ -113,6 +121,7 @@ public class GUI extends Application {
               destination.selected = false;
               source.selected = false;
               refresh();
+              winCheck();
               break;
             } else {
               destination.selected = false;
@@ -120,11 +129,17 @@ public class GUI extends Application {
             }
           } else {
             // System.out.println("Everythings getting selected");
-            source.selected = true;
+            // localSource.selected = true;
+            // System.out.println("Hello" + localSource.toString());
             // rawn.selected = true;
             refresh();
           }
 
+        }
+        if (!someSelect) {
+          source.selected = true;
+        } else {
+          source.selected = false;
         }
         refresh();
       });
@@ -138,19 +153,23 @@ public class GUI extends Application {
     get = game.getPile.toNode(0);
     get.setOnMouseClicked(event -> {
       for (Pile destination : game.piles) {
+        Boolean someSelect = false;
         if (destination.selected) {
+          someSelect = true;
           // try to move it here
           System.out.println("G Destination Pile: " + destination.toString());
           System.out.println("G Source Pile: " + game.getPile.toString());
           // System.out.println("Destination Pile: " + destination.toString());
           // if (destination.willMove(game.getPile)) {
+          
           if (game.getPile.willMove(destination) > 0) {
             move++;
             System.out.println("So it will move... but both are now selected to be false");
-            game.getPile.merge(destination.split(destination.peekTop()));
+            // game.getPile.merge(destination.split(destination.peekTop()));
             destination.selected = false;
             // game.getPile.selected = false;
             refresh();
+            winCheck();
             break;
           } else {
             destination.selected = false;
@@ -162,7 +181,12 @@ public class GUI extends Application {
           // rawn.selected = true;
           refresh();
         }
-
+        if (!someSelect) {
+          game.getPile.selected = true;
+        } else {
+          game.getPile.selected = false;
+        }
+        refresh();
       }
       refresh();
     });
@@ -172,8 +196,18 @@ public class GUI extends Application {
     Canvas draw = new Canvas(80, 124);
     draw = game.drawPile.toNode(0);
     draw.setOnMouseClicked(event -> {
-      move++;
-      game.drawCard();
+      if (game.drawPile.isEmpty() && game.getPile.isEmpty()) {
+      } else {
+        move++;
+        game.drawCard();
+        for (Pile destination : game.allPiles) {
+          if (destination.selected) { 
+            destination.selected = false;
+          }
+        }
+
+        
+      }
       refresh();
     });
     top.getChildren().addAll(draw);
@@ -185,6 +219,7 @@ public class GUI extends Application {
       // mawn = 
       // System.out.println("Initializing a pile");
       mawn.setOnMouseClicked(event -> {
+        Boolean someSelect = false;
         for(Pile destination : game.allPiles) {
           // System.out.println("N before if normalPile Pile: " + normalPile.toString());
           if (!normalPile.isEmpty()) {
@@ -197,12 +232,13 @@ public class GUI extends Application {
             }
           }
           if (destination.selected) {
+            someSelect = true;
             // try to move it here
             System.out.println("N Destination Pile: " + destination.toString());
             System.out.println("N normalPile Pile: " + normalPile.toString());
             int splitter = destination.willMove(normalPile);
             System.out.println("Splitter: " + splitter);
-            if (splitter != -1) {
+            if (splitter > -1) {
               move++;
               System.out.println("Youre doing it right");
 
@@ -210,7 +246,9 @@ public class GUI extends Application {
 
               destination.selected = false;
               normalPile.selected = false;
+              
               refresh();
+              winCheck();
               break;
             } else {
               destination.selected = false;
@@ -224,8 +262,9 @@ public class GUI extends Application {
             // rawn.selected = true;
             refresh();
           }
-
+          
         }
+        refresh();
 
       });
       normal.getChildren().addAll(mawn);
@@ -242,6 +281,12 @@ public class GUI extends Application {
     normal.getChildren().clear();
   }
 
+  public void newGame() {
+    move = 0;
+    this.game = new Klondike();
+    refresh();
+  }
+
   public void createMenu() {
     MenuBar menuBar = new MenuBar();
 
@@ -249,9 +294,7 @@ public class GUI extends Application {
     MenuItem newGame = new MenuItem("New Game");
     reset.getItems().addAll(newGame);
     newGame.setOnAction(actionEvent -> {
-      move = 0;
-      this.game = new Klondike();
-      refresh();
+      newGame();
     });
 
     menuBar.getMenus().addAll(reset);
@@ -261,6 +304,19 @@ public class GUI extends Application {
   public void winCheck() {
     if (game.win()) {
       game.timer.pause();
+      Alert alert = new Alert(AlertType.CONFIRMATION);
+      alert.setTitle("Congrats! You've won!");
+      alert.setHeaderText("Good Job!\nTime: " + game.timer.toString()+ "\nMoves: " + move);
+      alert.setContentText("Would you like to play again?");
+
+      alert.setGraphic(new ImageView(("./art/a_spades.png")));
+
+      Optional<ButtonType> result = alert.showAndWait();
+      if (result.get() == ButtonType.OK) {
+        newGame();
+      } else {
+        stop();
+      }
     }
   }
 
