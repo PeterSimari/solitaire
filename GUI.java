@@ -26,6 +26,7 @@ public class GUI extends Application {
   private int height = 800;
 
   VBox main = new VBox(10);
+  HBox gap = new HBox(100);
   HBox top = new HBox(10);
   HBox normal = new HBox(10);
   BorderPane window = new BorderPane();
@@ -53,6 +54,7 @@ public class GUI extends Application {
     // game.timer.start();
 
     left.setPrefWidth(150);
+    gap.setPrefHeight(30);
 
     createMenu();
     drawGame();
@@ -62,7 +64,7 @@ public class GUI extends Application {
     window.setCenter(main);
     window.setLeft(left);
 
-    main.getChildren().addAll(top, normal);
+    main.getChildren().addAll(gap, top, normal);
     // left.getChildren().addAll(score, time, moves);
 
     
@@ -116,8 +118,13 @@ public class GUI extends Application {
             winCheck();
           }
         } else {
-          game.selecter = source;
-          game.selecter.selected = true;
+          if (source.isEmpty()) {
+            refresh();
+          } else {
+            game.selecter = source;
+            game.selecter.selected = true;
+            refresh();
+          }
         }
         
         refresh();
@@ -131,12 +138,16 @@ public class GUI extends Application {
     Canvas get = new Canvas(80, 124);
     get = game.getPile.toNode(0);
     get.setOnMouseClicked(event -> {
-      if (game.selecter != null) {
+      if (game.selecter == null) {
         System.out.println("If and : " + game.selecter);
-        game.selecter = game.getPile;
-        game.selecter.selected = true;
-        refresh();
-        winCheck();
+        if (game.getPile.isEmpty()) {
+          refresh();
+        } else {
+          game.selecter = game.getPile;
+          game.selecter.selected = true;
+          refresh();
+          winCheck();
+        }
       } else if (game.getPile.isEmpty()) {
         refresh();
       } else {
@@ -248,8 +259,9 @@ public class GUI extends Application {
     Menu theme = new Menu("Themes");
     MenuItem chooseTheme = new MenuItem("Choose Themes");
     MenuItem makeTheme = new MenuItem("Custom Cards");
+    theme.getItems().addAll(chooseTheme, makeTheme);
 
-    menuBar.getMenus().addAll(reset);
+    menuBar.getMenus().addAll(reset, theme);
     window.setTop(menuBar);
   }
 
@@ -271,11 +283,8 @@ public class GUI extends Application {
       }
     }
   }
-
+  
   public void stop() {
 
   }
-
-  
-
 }
