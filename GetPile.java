@@ -23,6 +23,8 @@ public class GetPile extends Pile {
     
     if (p.cards.isEmpty() && topCard.rank == 13 && p.type == PileType.Normal) {
       return this.cards.size()-1;
+    } else if (p.cards.isEmpty() && topCard.rank != 1 && p.type == PileType.Final) {
+      return -1;
     } else if (p.cards.isEmpty() && topCard.rank == 1 && p.type == PileType.Final) {
       return this.cards.size() - 1;
     }
@@ -68,7 +70,7 @@ public class GetPile extends Pile {
       // canvas.drawImage(c.toImage(), 0, 0);
       if (this.selected) {
 
-        cards.get(i).drawEmptyOnCanvas(canvas, 0, i * offset);
+        cards.get(i).drawSelectOnCanvas(canvas, 0, i * offset);
         // System.out.println("Selected");
       } else {
         cards.get(i).drawOnCanvas(canvas, 0, i * offset);
