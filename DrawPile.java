@@ -19,7 +19,7 @@ public class DrawPile extends Pile {
       // canvas.drawImage(c.toImage(), 0, 0);
       if (this.selected) {
 
-        cards.get(i).drawEmptyOnCanvas(canvas, 0, i * offset);
+        cards.get(i).drawSelectOnCanvas(canvas, 0, i * offset);
         // System.out.println("Selected");
       } else {
         cards.get(i).drawOnCanvas(canvas, 0, i * offset);
