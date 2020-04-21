@@ -19,10 +19,16 @@ public class FinalPile extends Pile {
 
     System.out.println("We're in willMove Final");
     newCard = p.peekTop();
+    System.out.println("P.type = " + p.type);
+    System.out.println("this.type = " + this.type);
     if (cards.isEmpty() && newCard.rank == 1) {
       System.out.println("If this.cards is empty & new rank == 1");
       suitFilter = newCard.suit;
       return 1;
+    } else if (cards.isEmpty() && newCard.rank == 13 && p.type == PileType.Normal) {
+      return 1;
+    } else if (cards.isEmpty() && newCard.rank != 13 && p.type == PileType.Normal) {
+      return -1;
     }
 
     topCard = cards.get(cards.size() - 1);
@@ -71,7 +77,7 @@ public class FinalPile extends Pile {
       // canvas.drawImage(c.toImage(), 0, 0);
       if (this.selected) {
 
-        cards.get(i).drawEmptyOnCanvas(canvas, 0, i * offset);
+        cards.get(i).drawSelectOnCanvas(canvas, 0, i * offset);
         // System.out.println("Selected");
       } else {
         cards.get(i).drawOnCanvas(canvas, 0, i * offset);
