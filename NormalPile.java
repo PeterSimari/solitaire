@@ -24,7 +24,6 @@ public class NormalPile extends Pile {
       System.out.println("Top: " + topCard.toString());
       System.out.println("topCard rank? " + topCard.rank);
       if (p.cards.isEmpty() && topCard.rank == 13 && p.type == PileType.Normal) {
-
         return i;
         // newCard = p.cards.get(p.cards.size() - 1);
       } else if (p.cards.isEmpty() && topCard.rank == 1 && p.type == PileType.Final) {
@@ -32,6 +31,8 @@ public class NormalPile extends Pile {
         System.out.println("This is a lot of damage");
         return i;
         // continue;
+      } else if (p.cards.isEmpty() && topCard.rank != 1 && p.type == PileType.Final) {
+        return -1;
       } else if (p.cards.isEmpty() && topCard.rank != 13 && p.type != PileType.Final) {
         continue;
       }
