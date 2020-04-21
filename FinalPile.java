@@ -25,8 +25,8 @@ public class FinalPile extends Pile {
       System.out.println("If this.cards is empty & new rank == 1");
       suitFilter = newCard.suit;
       return 1;
-    } else if (cards.isEmpty() && newCard.rank == 13 && p.type == PileType.Normal) {
-      return 1;
+    } else if (p.cards.isEmpty() && newCard.rank == 13 && p.type == PileType.Normal) {
+      return this.cards.size() - 1;
     } else if (cards.isEmpty() && newCard.rank != 13 && p.type == PileType.Normal) {
       return -1;
     }
@@ -37,10 +37,6 @@ public class FinalPile extends Pile {
         return -1;
       }
 
-      //Dont know why this was here... if something goes wrong come back and check
-      // it only really makes sense for this to not work
-      // this method here is for the normal pile to check
-      // wtf!!!
       if (topCard.black ^ newCard.black) {
         if (topCard.rank + 1 == newCard.rank) {
           System.out.println("This.piletype = " + this.type.toString());
