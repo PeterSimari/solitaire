@@ -96,7 +96,7 @@ public class Card extends Parent {
     GraphicsContext gc = canvas.getGraphicsContext2D();
     if (this.face == true) {
       ColorAdjust color = new ColorAdjust();
-      color.setBrightness(-1.0);
+      color.setBrightness(-.5);
       gc.setEffect(color);
       gc.drawImage(this.toImage(), x, y);
     } else if (this.face != true) {
