@@ -1,7 +1,9 @@
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class Card extends Parent {
 
@@ -88,13 +90,20 @@ public class Card extends Parent {
       gc.drawImage(rawn, x, y);
     }
     
-    canvas.setOnMouseClicked(event -> {
-      // if (rawn.peekTop()) {
+  }
 
-      // }
-      // System.out.println(this);
-    });
-    
+  public void drawSelectOnCanvas(Canvas canvas, int x, int y) {
+    GraphicsContext gc = canvas.getGraphicsContext2D();
+    if (this.face == true) {
+      ColorAdjust color = new ColorAdjust();
+      color.setBrightness(-1.0);
+      gc.setEffect(color);
+      gc.drawImage(this.toImage(), x, y);
+    } else if (this.face != true) {
+      Image rawn = new Image("/art/back.png");
+      gc.drawImage(rawn, x, y);
+    }
+
   }
 
   public boolean equals(Object check) {
@@ -151,10 +160,4 @@ public class Card extends Parent {
     face = false;
   }
 
-  // public static void main(String[] args) {
-  //   // Card jawn = new Card(13, Suit.CLUBS);
-  //   Card hone = new Card(13, Suit.DIAMONDS);
-  //   System.out.println(hone);
-  //   // System.out.println(getSuits());
-  // }
 }
