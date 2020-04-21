@@ -132,11 +132,16 @@ public class GUI extends Application {
     get = game.getPile.toNode(0);
     get.setOnMouseClicked(event -> {
       if (game.selecter != null) {
+        System.out.println("If and : " + game.selecter);
         game.selecter = game.getPile;
         game.selecter.selected = true;
         refresh();
         winCheck();
+      } else if (game.getPile.isEmpty()) {
+        refresh();
       } else {
+        System.out.println("Else and : " + game.selecter);
+        // game.selecter.selected = false;
         game.selecter = game.getPile;
         game.selecter.selected = true;
         refresh();
@@ -199,9 +204,13 @@ public class GUI extends Application {
             game.selecter = null;
           }
         } else {
-          game.selecter = normalPile;
-          game.selecter.selected = true;
-          refresh();
+          if (normalPile.isEmpty()) {
+            refresh();
+          } else {
+            game.selecter = normalPile;
+            game.selecter.selected = true;
+            refresh();
+          }
         }
         refresh();
 
