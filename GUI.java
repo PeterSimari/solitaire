@@ -1,7 +1,5 @@
 import javafx.util.Duration;
-import java.util.ArrayList;
 import java.util.Optional;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -283,7 +281,7 @@ public class GUI extends Application {
       }
     }
   }
-  
+
   public void stop() {
 
   }
