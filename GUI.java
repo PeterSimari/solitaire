@@ -1,4 +1,5 @@
 import javafx.util.Duration;
+import java.util.ArrayList;
 import java.util.Optional;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -7,6 +8,7 @@ import javafx.scene.*;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -34,10 +36,16 @@ public class GUI extends Application {
   HBox time = new HBox(50);
   HBox moves = new HBox(10);
 
+  ThemeView theme;
+  ArrayList<ThemeView> choices;
+
+  Scene base;
+
   private int move = 0;
 
   Klondike game;
-  Klondike undo;
+  // ArrayList<Pile> undo;
+  // MenuItem undoItem;
 
   public void setStyles() {
     left.getStyleClass().add("left");
@@ -45,10 +53,10 @@ public class GUI extends Application {
 
   }
 
-
   public void start(Stage primaryStage) {
     setStyles();
     game = new Klondike();
+    
     // game.timer.start();
 
     left.setPrefWidth(150);
@@ -71,7 +79,6 @@ public class GUI extends Application {
       final Label timey = new Label(game.timer.toString());
       time.setAlignment(Pos.CENTER);
 
-
       time.getChildren().addAll(timey);
       // System.out.println("THIS IS WORKING");
 
@@ -84,14 +91,14 @@ public class GUI extends Application {
     timeline.setCycleCount(Timeline.INDEFINITE);
     timeline.play();
 
-
-    
-
     left.getChildren().addAll(time, moves);
 
-    Scene base = new Scene(window, width, height);
+    base = new Scene(window, width, height);
+    theme = new GreenTheme(base);
+    
+    
 
-    base.getStylesheets().add(getClass().getResource("./Style.css").toExternalForm());
+    theme.handleTheme();
     
     primaryStage.setTitle("Solitaire");
     primaryStage.setScene(base);
@@ -108,6 +115,8 @@ public class GUI extends Application {
         // Pile localSource = source;
         if (game.selecter != null) {
           if (game.selecter.willMove(source) >= 0) {
+            // undo = game.allPiles;
+            // check(undoItem);
             move++;
             source.merge(game.selecter.split(game.selecter.peekTop()));
             game.selecter.selected = false;
@@ -150,7 +159,7 @@ public class GUI extends Application {
         refresh();
       } else {
         System.out.println("Else and : " + game.selecter);
-        // game.selecter.selected = false;
+        game.selecter.selected = false;
         game.selecter = game.getPile;
         game.selecter.selected = true;
         refresh();
@@ -165,6 +174,8 @@ public class GUI extends Application {
     draw.setOnMouseClicked(event -> {
       if (game.drawPile.isEmpty() && game.getPile.isEmpty()) {
       } else {
+        // undo = game.allPiles;
+        // check(undoItem);
         move++;
         game.drawCard();
         if (game.selecter != null) { 
@@ -180,7 +191,6 @@ public class GUI extends Application {
     // if it is selected, see if you can move the whole pile over
     for (Pile normalPile : game.piles) {
       Canvas mawn = normalPile.toNode(20);
-      // System.out.println("Initializing a pile");
       mawn.setOnMouseClicked(event -> {
         if (!normalPile.isEmpty()) {
           // System.out.println("normalPile is not empty");
@@ -192,18 +202,11 @@ public class GUI extends Application {
           }
         }
         if (game.selecter != null) {
-          // int splitter = normalPile.willMove(game.selecter);
           int splitter = game.selecter.willMove(normalPile);
           System.out.println("SPLITTER: " + splitter);
           if (splitter > -1) {
             move++;
-            // System.out.println("BEFORE MERGE");
-            // System.out.println("N Selecter Pile: " + game.selecter.toString());
-            // System.out.println("N normalPile Pile: " + normalPile.toString());
             normalPile.merge(game.selecter.split(game.selecter.getCards().get(splitter)));
-            // System.out.println("AFTER MERGE");
-            // System.out.println("N Selecter Pile: " + game.selecter.toString());
-            // System.out.println("N normalPile Pile: " + normalPile.toString());
             game.selecter.selected = false;
             game.selecter = null;
             refresh();
@@ -229,6 +232,8 @@ public class GUI extends Application {
   }
 
   public void refresh() {
+    // System.out.println("Regu: " + this.game.allPiles);
+    // System.out.println("Undo: " + undo);
     clearBoard();
     drawGame();
   }
@@ -259,9 +264,25 @@ public class GUI extends Application {
     MenuItem makeTheme = new MenuItem("Custom Cards");
     theme.getItems().addAll(chooseTheme, makeTheme);
 
+    
+    chooseTheme.setOnAction(actionEvent -> {
+      ArrayList<ThemeView> choices = new ArrayList<ThemeView>();
+      choices.add(new GreenTheme(base));
+      choices.add(new BlueTheme(base));
+      choices.add(new RedTheme(base));
+      ChoiceDialog<ThemeView> dialog = new ChoiceDialog<ThemeView>(choices.get(0), choices);
+      dialog.setTitle("Choose a Theme!"); // setting the fields for dialog
+      dialog.setHeaderText("Select a Theme by Color:");
+      dialog.setContentText("Themes:");
+      Optional<ThemeView> result = dialog.showAndWait();
+      this.theme = result.get();
+      this.theme.handleTheme();
+    });
+
     menuBar.getMenus().addAll(reset, theme);
     window.setTop(menuBar);
   }
+
 
   public void winCheck() {
     if (game.win()) {
@@ -281,6 +302,7 @@ public class GUI extends Application {
       }
     }
   }
+
 
   public void stop() {
 
