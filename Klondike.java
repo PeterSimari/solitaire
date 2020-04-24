@@ -111,10 +111,6 @@ public class Klondike {
   }
 
 
-  // PETE REMEMBER
-  // for getPile, if anyone even clicks on the pile dont consider it selected. deselect everything, then select that.
-
-
   public boolean win() {
     for (Pile p : finalPiles) {
       if(p.cards.size() < 13) {
