@@ -4,3 +4,11 @@
 The project was built with my Software Engineering class in mind. This class helped me understand a ton about java programming, including Polymorphism and State-Patterns. I implemented those a few times throughout this code.
 
 I have been working on this project since January and recently just uploaded this to GitHub.
+
+If you would like to run and play this game, follow these instructions:
+ 1. Download the game files.
+ 2. Compile with "javac *.java"
+ 3. Run "java GUI"
+ 4. Play! Have fun, comment if you can find any bugs or if I should add new features!
+
+Thank you very much! I hope you enjoy.
