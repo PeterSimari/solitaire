@@ -1,21 +1,38 @@
 import java.util.ArrayList;
 
-
+/**
+ * Klondike class structures how the Game is meant to be played.
+ */
 public class Klondike {
   
+  /**
+   * Deck creates all the cards to be pulled from.
+   */
   public Deck deck;
   ArrayList<NormalPile> piles;
   ArrayList<FinalPile> finalPiles;
   ArrayList<Pile> allPiles;
   Pile getPile;
   Pile drawPile;
+  /**
+   * Selects how many normal piles are going to be drawn.
+   * Always set to 7, but if you would like a solitaire with 8 piles, or 3 piles, you could have it.
+   */
   public final int pileNumber = 7;
 
+  /**
+   * A single pile is selected at a time, this helps keep track.
+   */
   Pile selecter;
 
-
+  /**
+   * A timer to tell how long you have been playing the game.
+   */
   StopWatch timer = new StopWatch();
   
+  /**
+   * The constructor sets up the cards and starts the timer.
+   */
   public Klondike() {
     setCards();
     setup();
@@ -23,6 +40,9 @@ public class Klondike {
     timer.start();
   }
 
+  /**
+   * Shows what all of the piles in the game are holding.
+   */
   public String toString() {
     String whole = "";
     for(Pile jawn : allPiles) {
@@ -31,6 +51,10 @@ public class Klondike {
     return whole;
   }
 
+  /**
+   * Sets all of the cards from the Deck field.
+   * This, in turn, emptie sthe deck field.
+   */
   public void setCards() {
     deck = new Deck();
 
@@ -44,10 +68,10 @@ public class Klondike {
     allPiles.add(getPile);
   }
 
+  /**
+   * Initializes all of the piles and adds them to the piles.
+   */
   public void setup() {
-    // drawPile.setPileType(Pile.PileType.Draw);
-    // getPile.setPileType(Pile.PileType.Get);
-
     for (int i = 1; i <= pileNumber; i++) {
       NormalPile p = new NormalPile();
 
@@ -77,39 +101,37 @@ public class Klondike {
     }
   }
 
+  /**
+   * Where the cards are drawn from the Draw Pile.
+   */
   public void drawCard() {
-    if(drawPile.cards.isEmpty() == false) {
+    if(!drawPile.cards.isEmpty()) {
       Card draw = drawPile.drawCard();
       draw.show();
       getPile.addCard(draw);
-      System.out.println("tay keith, draw");
     } else {
       turnGet();
     }
   }
 
-  public void nextGet() {
-    if(drawPile.cards.isEmpty() == false) {
-      return;
-    }
-    while(getPile.cards.isEmpty() == false) {
-      Card c = getPile.drawCard();
-      c.hide();
-      drawPile.addCard(c);
-    }
-  }
-
+  /**
+   * Resets the Draw Pile.
+   */
   public void turnGet() {
-    if(drawPile.cards.isEmpty() == false) {
+    if(!drawPile.cards.isEmpty()) {
       return;
     }
-    while(getPile.cards.isEmpty() == false) {
+    while(!getPile.cards.isEmpty()) {
       Card c = getPile.drawCard();
       c.hide();
       drawPile.addCard(c);
     }
   }
 
+  /**
+   * Checks to see if you've won the game
+   * Checks by seeing if each final Pile has 13 cards in each.
+   */
   public boolean win() {
     for (Pile p : finalPiles) {
       if(p.cards.size() < 13) {
@@ -120,6 +142,11 @@ public class Klondike {
     return true;
   }
 
+  /**
+   * Allows you to set the back of each card
+   * @param url The URL selected to set the back for each card in the list.
+   * Iterates through all piles, setting each card to have the same URL back
+   */
   public void setBacks(String url) {
     for(Pile jawn : allPiles) {
       ArrayList<Card> iterate = jawn.getCards();
@@ -128,12 +155,5 @@ public class Klondike {
       }
       jawn.cards = iterate;
     }
-  }
-
-  public static void main(String[] args) {
-    Klondike game = new Klondike();
-    System.out.println(game);
-    game.drawCard();
-    System.out.println(game);
   }
 }
