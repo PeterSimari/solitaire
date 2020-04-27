@@ -1,2 +1,4 @@
 # solitaire
  Solitaire video game where you can play randomly shuffled decks from finish to end. It is built in mind for a neural network to be able to access and play the game. I designed the game so that it would work fast, without any kind of unnecessary bugs popping up. I implemented a way to choose between different themes for your game, changing the background color and the color of the menus. You can also upload any image you would like to be the back of your card. It has documentation for each class as well.
+
+The project was built with my Software Engineering class in mind. This class helped me understand a ton about java programming, including Polymorphism and State-Patterns. I implemented those a few times throughout this code.
