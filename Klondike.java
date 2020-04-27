@@ -11,11 +11,15 @@ public class Klondike {
   Pile drawPile;
   public final int pileNumber = 7;
 
+  Pile selecter;
+
+
   StopWatch timer = new StopWatch();
   
   public Klondike() {
     setCards();
     setup();
+
     timer.start();
   }
 
@@ -106,35 +110,6 @@ public class Klondike {
     }
   }
 
-
-
-
-
-  // public void clickMove(Card move) {
-  //   int rank = move.getRank();
-  //   Card.Suit suit = move.getSuit();
-    
-
-  //   for(Pile all : piles) {
-  //     if (move.black) {
-  //       Card diamond = all.searchCard(rank + 1, "DIAMONDS");
-  //       if (diamond.face == true) {
-  //         System.out.println(diamond);
-  //         return;
-  //       }
-  //       Card heart = all.searchCard(rank + 1, "HEARTS");
-  //       if (heart.face) {
-  //         System.out.println(heart);
-  //         return;
-  //       }
-  //     }
-  //     // Card mover = all.searchCard(rank + 1, suit.toString());
-      
-      
-      
-  //   }
-  // }
-
   public boolean win() {
     for (Pile p : finalPiles) {
       if(p.cards.size() < 13) {
@@ -143,6 +118,16 @@ public class Klondike {
     }
     timer.stop();
     return true;
+  }
+
+  public void setBacks(String url) {
+    for(Pile jawn : allPiles) {
+      ArrayList<Card> iterate = jawn.getCards();
+      for (Card back : iterate) {
+        back.setBack(url);
+      }
+      jawn.cards = iterate;
+    }
   }
 
   public static void main(String[] args) {
