@@ -21,7 +21,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
 
-
+/**
+ * GUI class builds the GUI
+ * Allows you to select specific cards
+ * Change themes, edit the back of each card
+ */
 public class GUI extends Application {
 
   private int width = 1400;
@@ -51,17 +55,22 @@ public class GUI extends Application {
   // ArrayList<Pile> undo;
   // MenuItem undoItem;
 
-  public void setStyles() {
+  private void setStyles() {
     left.getStyleClass().add("left");
     main.getStyleClass().add("main");
 
   }
 
+  /**
+   * Initializes the GUI with the stage.
+   * Creates the game, adds all of the VBoxes and HBoxes into each other
+   * It then builds the game itself .
+   * Also updates the timer object and moves on the GUI's left hand side.
+   * Sets the theme of the GUI as well.
+   */
   public void start(Stage primaryStage) {
     setStyles();
     game = new Klondike();
-    
-    // game.timer.start();
 
     left.setPrefWidth(150);
     gap.setPrefHeight(30);
@@ -75,22 +84,16 @@ public class GUI extends Application {
     window.setLeft(left);
 
     main.getChildren().addAll(gap, top, normal);
-    // left.getChildren().addAll(score, time, moves);
-
     
-    Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(.1), event -> {
+    Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(.2), event -> {
       time.getChildren().clear();
       final Label timey = new Label(game.timer.toString());
       time.setAlignment(Pos.CENTER);
-
       time.getChildren().addAll(timey);
-      // System.out.println("THIS IS WORKING");
-
       moves.getChildren().clear();
       Label mover = new Label("Moves: " + move);
       moves.setAlignment(Pos.CENTER);
       moves.getChildren().addAll(mover);
-      
     }));
     timeline.setCycleCount(Timeline.INDEFINITE);
     timeline.play();
@@ -99,8 +102,6 @@ public class GUI extends Application {
 
     base = new Scene(window, width, height);
     theme = new GreenTheme(base);
-    
-    
 
     theme.handleTheme();
     
@@ -108,19 +109,21 @@ public class GUI extends Application {
     primaryStage.setScene(base);
     primaryStage.show();
     primaryStage.setResizable(false);
-
   }
 
+  /**
+   * Draws the game.
+   * Creates canvases for each Pile from the allPiles field from Klondike class/game field here.
+   * Also initializes what happens when you click on each pile as well.
+   * This is where willMove is ran.
+   */
   public void drawGame() {
     for (Pile source : game.finalPiles) {
       Canvas mawn = new Canvas(80, 124);
       mawn = source.toNode(0);
       mawn.setOnMouseClicked(event -> {
-        // Pile localSource = source;
         if (game.selecter != null) {
           if (game.selecter.willMove(source) >= 0) {
-            // undo = game.allPiles;
-            // check(undoItem);
             move++;
             source.merge(game.selecter.split(game.selecter.peekTop()));
             game.selecter.selected = false;
@@ -137,7 +140,6 @@ public class GUI extends Application {
             refresh();
           }
         }
-        
         refresh();
       });
       top.getChildren().addAll(mawn);
@@ -150,7 +152,6 @@ public class GUI extends Application {
     get = game.getPile.toNode(0);
     get.setOnMouseClicked(event -> {
       if (game.selecter == null) {
-        System.out.println("If and : " + game.selecter);
         if (game.getPile.isEmpty()) {
           refresh();
         } else {
@@ -162,7 +163,6 @@ public class GUI extends Application {
       } else if (game.getPile.isEmpty()) {
         refresh();
       } else {
-        System.out.println("Else and : " + game.selecter);
         game.selecter.selected = false;
         game.selecter = game.getPile;
         game.selecter.selected = true;
@@ -178,8 +178,6 @@ public class GUI extends Application {
     draw.setOnMouseClicked(event -> {
       if (game.drawPile.isEmpty() && game.getPile.isEmpty()) {
       } else {
-        // undo = game.allPiles;
-        // check(undoItem);
         move++;
         game.drawCard();
         if (game.selecter != null) { 
@@ -191,15 +189,11 @@ public class GUI extends Application {
     });
     top.getChildren().addAll(draw);
 
-    // Check to see if a pile is selected, if not then set selected to be true 
-    // if it is selected, see if you can move the whole pile over
     for (Pile normalPile : game.piles) {
       Canvas mawn = normalPile.toNode(20);
       mawn.setOnMouseClicked(event -> {
         if (!normalPile.isEmpty()) {
-          // System.out.println("normalPile is not empty");
           if (!normalPile.peekTop().face) {
-            // System.out.println("normalPile peekTop was hidden - should be shown");
             normalPile.peekTop().show();
             refresh();
             return;
@@ -207,7 +201,6 @@ public class GUI extends Application {
         }
         if (game.selecter != null) {
           int splitter = game.selecter.willMove(normalPile);
-          System.out.println("SPLITTER: " + splitter);
           if (splitter > -1) {
             move++;
             normalPile.merge(game.selecter.split(game.selecter.getCards().get(splitter)));
@@ -235,18 +228,26 @@ public class GUI extends Application {
     }
   }
 
+  /**
+   * Refreshes the game board.
+   * It clears what was there, and now draws the current fields from game.
+   */
   public void refresh() {
-    // System.out.println("Regu: " + this.game.allPiles);
-    // System.out.println("Undo: " + undo);
     clearBoard();
     drawGame();
   }
 
+  /**
+   * Clears the entire main board of cards.
+   */
   public void clearBoard() {
     top.getChildren().clear();
     normal.getChildren().clear();
   }
 
+  /**
+   * Sets the game field to a new game. Sets up a whole new game.
+   */
   public void newGame() {
     move = 0;
     String beans = "/art/back.png";
@@ -261,6 +262,9 @@ public class GUI extends Application {
     refresh();
   }
 
+  /**
+   * Creates the menu bar at the top instead of having all of this in the Start function
+   */
   public void createMenu() {
     MenuBar menuBar = new MenuBar();
 
@@ -309,7 +313,11 @@ public class GUI extends Application {
     window.setTop(menuBar);
   }
 
-
+  /**
+   * Checks to see if you have won.
+   * If you have, it will create a new Alert telling the player they won, and pausing the timer.
+   * Prompts you with the option to play another game.
+   */
   public void winCheck() {
     if (game.win()) {
       game.timer.pause();
@@ -329,7 +337,9 @@ public class GUI extends Application {
     }
   }
 
-
+  /**
+   * Stops the game. Doesn't do anything else.
+   */
   public void stop() {
 
   }
