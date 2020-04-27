@@ -110,7 +110,6 @@ public class Klondike {
     }
   }
 
-
   public boolean win() {
     for (Pile p : finalPiles) {
       if(p.cards.size() < 13) {
@@ -119,6 +118,16 @@ public class Klondike {
     }
     timer.stop();
     return true;
+  }
+
+  public void setBacks(String url) {
+    for(Pile jawn : allPiles) {
+      ArrayList<Card> iterate = jawn.getCards();
+      for (Card back : iterate) {
+        back.setBack(url);
+      }
+      jawn.cards = iterate;
+    }
   }
 
   public static void main(String[] args) {
