@@ -3,8 +3,11 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
+
+/**
+  * A Card object that holds it's Suit and rank.
+ */
 public class Card extends Parent {
 
   public enum Suit {
@@ -19,6 +22,9 @@ public class Card extends Parent {
   
   boolean black;
   boolean face;
+
+  public String back = "/art/back.png";
+  public Image b = new Image(back, 79, 124, false, false);
 
 
   public Card(int rank, Suit suit) {
@@ -86,8 +92,8 @@ public class Card extends Parent {
     if (this.face == true) {
       gc.drawImage(this.toImage(), x, y);
     } else if (this.face != true) {
-      Image rawn = new Image("/art/back.png");
-      gc.drawImage(rawn, x, y);
+      // Image rawn = new Image(back, 79, 124, false, false);
+      gc.drawImage(b, x, y);
     }
     
   }
@@ -100,8 +106,8 @@ public class Card extends Parent {
       gc.setEffect(color);
       gc.drawImage(this.toImage(), x, y);
     } else if (this.face != true) {
-      Image rawn = new Image("/art/back.png");
-      gc.drawImage(rawn, x, y);
+      // Image rawn = new Image(back, 79, 124, false, false);
+      gc.drawImage(b, x, y);
     }
 
   }
@@ -158,6 +164,15 @@ public class Card extends Parent {
 
   public void hide() {
     face = false;
+  }
+
+  public void setBack(String url) {
+    this.back = url;
+    this.b = new Image(url, 79, 124, false, false);
+  }
+
+  public String getBack() {
+    return this.back;
   }
 
 }
