@@ -1,12 +1,4 @@
 
-.button{
-  -fx-background-color: rgb(172, 168, 168);
-}
-
-.button:hover {
-  -fx-background-color: red;
-}
-
 .left {
   -fx-padding: 10;
   -fx-border-style: solid inside;
