@@ -190,7 +190,7 @@ public class GUI extends Application {
     top.getChildren().addAll(draw);
 
     for (Pile normalPile : game.piles) {
-      Canvas mawn = normalPile.toNode(20);
+      Canvas mawn = normalPile.toNode(25);
       mawn.setOnMouseClicked(event -> {
         if (!normalPile.isEmpty()) {
           if (!normalPile.peekTop().face) {
