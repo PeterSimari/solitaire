@@ -299,7 +299,7 @@ public class GUI extends Application {
       File selectedFile = fc.showOpenDialog(chooserStage);
       if (selectedFile != null) {
         fc.setInitialDirectory(selectedFile.getParentFile());
-        System.out.println(selectedFile.toURI().toString());
+        // System.out.println(selectedFile.toURI().toString()); //Debugging tool
         game.setBacks(selectedFile.toURI().toString());
         refresh();
       } else {
