@@ -6,3 +6,4 @@ GUI.class
 *.class
 *.class
 .class
+.DS_Store
