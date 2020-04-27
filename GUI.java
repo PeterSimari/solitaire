@@ -1,4 +1,5 @@
 import javafx.util.Duration;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Optional;
 import javafx.animation.KeyFrame;
@@ -16,6 +17,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
 
@@ -25,6 +27,7 @@ public class GUI extends Application {
   private int width = 1400;
   private int height = 800;
 
+  
   VBox main = new VBox(10);
   HBox gap = new HBox(100);
   HBox top = new HBox(10);
@@ -40,6 +43,7 @@ public class GUI extends Application {
   ArrayList<ThemeView> choices;
 
   Scene base;
+  Stage chooserStage;
 
   private int move = 0;
 
@@ -245,7 +249,15 @@ public class GUI extends Application {
 
   public void newGame() {
     move = 0;
+    String beans = "/art/back.png";
+    for (Pile name : game.allPiles) {
+      if(!name.isEmpty()) {
+        beans = name.getCards().get(0).getBack();
+        break;
+      }
+    }
     this.game = new Klondike();
+    this.game.setBacks(beans);
     refresh();
   }
 
@@ -261,9 +273,8 @@ public class GUI extends Application {
 
     Menu theme = new Menu("Themes");
     MenuItem chooseTheme = new MenuItem("Choose Themes");
-    MenuItem makeTheme = new MenuItem("Custom Cards");
-    theme.getItems().addAll(chooseTheme, makeTheme);
-
+    MenuItem changeBack = new MenuItem("Custom Card Backs");
+    theme.getItems().addAll(chooseTheme, changeBack);
     
     chooseTheme.setOnAction(actionEvent -> {
       ArrayList<ThemeView> choices = new ArrayList<ThemeView>();
@@ -277,6 +288,21 @@ public class GUI extends Application {
       Optional<ThemeView> result = dialog.showAndWait();
       this.theme = result.get();
       this.theme.handleTheme();
+    });
+
+    changeBack.setOnAction(actionEvent -> {
+      FileChooser fc = new FileChooser();
+      File selectedFile = fc.showOpenDialog(chooserStage);
+      if (selectedFile != null) {
+        fc.setInitialDirectory(selectedFile.getParentFile());
+        System.out.println(selectedFile.toURI().toString());
+        game.setBacks(selectedFile.toURI().toString());
+        refresh();
+      } else {
+        System.out.println("Select something next time!");
+        refresh();
+      }
+      
     });
 
     menuBar.getMenus().addAll(reset, theme);
