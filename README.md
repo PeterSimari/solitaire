@@ -7,8 +7,9 @@ I have been working on this project since January and recently just uploaded thi
 
 If you would like to run and play this game, follow these instructions:
  1. Download the game files.
- 2. Compile with "javac *.java"
- 3. Run "java GUI"
- 4. Play! Have fun, comment if you can find any bugs or if I should add new features!
+ 2. Navigate to the "solitaire" folder.
+ 3. Compile with "javac *.java"
+ 4. Run "java GUI"
+ 5. Play! Have fun, comment if you can find any bugs or if I should add new features!
 
 Thank you very much! I hope you enjoy.
