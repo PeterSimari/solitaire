@@ -52,8 +52,6 @@ public class GUI extends Application {
   private int move = 0;
 
   Klondike game;
-  // ArrayList<Pile> undo;
-  // MenuItem undoItem;
 
   private void setStyles() {
     left.getStyleClass().add("left");
