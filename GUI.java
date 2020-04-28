@@ -336,9 +336,9 @@ public class GUI extends Application {
   }
 
   /**
-   * Stops the game. Doesn't do anything else.
+   * Stops the game.
    */
   public void stop() {
-
+    game.timer.stop();
   }
 }
