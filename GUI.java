@@ -32,18 +32,18 @@ public class GUI extends Application {
   private int height = 800;
 
   
-  VBox main = new VBox(10);
-  HBox gap = new HBox(100);
-  HBox top = new HBox(10);
-  HBox normal = new HBox(10);
-  BorderPane window = new BorderPane();
+  private VBox main = new VBox(10);
+  private HBox gap = new HBox(100);
+  private HBox top = new HBox(10);
+  private HBox normal = new HBox(10);
+  private BorderPane window = new BorderPane();
 
-  VBox left = new VBox(10);
+  private VBox left = new VBox(10);
   HBox score = new HBox(10);
-  HBox time = new HBox(50);
-  HBox moves = new HBox(10);
+  private HBox time = new HBox(50);
+  private HBox moves = new HBox(10);
 
-  ThemeView theme;
+  private ThemeView theme;
   ArrayList<ThemeView> choices;
 
   Scene base;
@@ -230,7 +230,7 @@ public class GUI extends Application {
    * Refreshes the game board.
    * It clears what was there, and now draws the current fields from game.
    */
-  public void refresh() {
+  private void refresh() {
     clearBoard();
     drawGame();
   }
@@ -238,7 +238,7 @@ public class GUI extends Application {
   /**
    * Clears the entire main board of cards.
    */
-  public void clearBoard() {
+  private void clearBoard() {
     top.getChildren().clear();
     normal.getChildren().clear();
   }
@@ -246,7 +246,7 @@ public class GUI extends Application {
   /**
    * Sets the game field to a new game. Sets up a whole new game.
    */
-  public void newGame() {
+  private void newGame() {
     move = 0;
     String beans = "/art/back.png";
     for (Pile name : game.allPiles) {
@@ -263,7 +263,7 @@ public class GUI extends Application {
   /**
    * Creates the menu bar at the top instead of having all of this in the Start function
    */
-  public void createMenu() {
+  private void createMenu() {
     MenuBar menuBar = new MenuBar();
 
     Menu reset = new Menu("New");
@@ -316,7 +316,7 @@ public class GUI extends Application {
    * If you have, it will create a new Alert telling the player they won, and pausing the timer.
    * Prompts you with the option to play another game.
    */
-  public void winCheck() {
+  private void winCheck() {
     if (game.win()) {
       game.timer.pause();
       Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -341,4 +341,4 @@ public class GUI extends Application {
   public void stop() {
     game.timer.stop();
   }
-}
+} 
