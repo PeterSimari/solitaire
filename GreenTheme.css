@@ -1,4 +1,12 @@
 
+.menu:hover {
+  -fx-background-color: rgb(46, 97, 4);
+}
+
+.menuItem:hover {
+  -fx-background-color: rgb(192, 192, 192);
+}
+
 .left {
   -fx-padding: 10;
   -fx-border-style: solid inside;
